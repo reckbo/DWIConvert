@@ -4,7 +4,6 @@ project(DWIConvert)
 #-----------------------------------------------------------------------------
 # Dependencies.
 #
-#
 # ITK
 # SlicerExecutionModel
 
@@ -30,31 +29,16 @@ set(DWIConvertSupportLib_SRCS
   DWIMetaDataDictionaryValidator.cxx
   )
 
-# set(DWIConvertTest_SRC)
-# foreach(f ${DWIConvertSupportLib_SRCS})
-#   list(APPEND DWIConvertTest_SRC
-#     ${CMAKE_CURRENT_LIST_DIR}/${f})
-# endforeach()
-
 add_library(DWIConvertSupportLib STATIC ${DWIConvertSupportLib_SRCS})
-#target_link_libraries(DWIConvertSupportLib ${DWIConvert_ITK_LIBRARIES} BRAINSCommonLib)
 target_link_libraries(DWIConvertSupportLib ${DWIConvert_ITK_LIBRARIES})
-
-# set(PROGS_LIST_1
-#   Convert4DImageTo3DSeries
-#   )
-# foreach(prog ${PROGS_LIST_1})
-#   add_executable(${prog} ${prog}.cxx)
-#   #target_link_libraries(${prog} BRAINSCommonLib ${DWIConvert_ITK_LIBRARIES})
-#   target_link_libraries(${prog} ${DWIConvert_ITK_LIBRARIES})
-# endforeach()
-
 find_package(SlicerExecutionModel REQUIRED GenerateCLP)
-include(${CMAKE_CURRENT_SOURCE_DIR}/CMake/CMakeBRAINS3BuildMacros.cmake)
+include(${SlicerExecutionModel_USE_FILE})
 
- StandardBRAINSBuildMacro(NAME DWIConvert EXECUTABLE_ONLY
-   TARGET_LIBRARIES DWIConvertSupportLib)
+SEMMacroBuildCLI(
+  NAME "DWIConvert" EXECUTABLE_ONLY
+  TARGET_LIBRARIES DWIConvertSupportLib
+  INCLUDE_DIRECTORIES ${ITK_INSTALL_PREFIX}/include/dcmtk/dcmdata ${ITK_INSTALL_PREFIX}/include/dcmtk/dcmjpls ${ITK_INSTALL_PREFIX}/include/dcmtk/oflog ${ITK_INSTALL_PREFIX}/include/
+  )
 
-# if(BUILD_TESTING AND NOT BRAINSTools_DISABLE_TESTING)
-#   add_subdirectory(TestSuite)
-# endif()
+ # StandardBRAINSBuildMacro(NAME DWIConvert EXECUTABLE_ONLY
+ #  TARGET_LIBRARIES DWIConvertSupportLib)
